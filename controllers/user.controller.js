@@ -1,11 +1,51 @@
-module.exports.getUsers = async () => {
-  console.log('getUsers');
+const { User } = require('./../models');
+const _ = require('lodash');
+
+module.exports.getUsers = async (req, res, next) => {
+  try {
+    const foundUsers = await User.findAll({
+      raw: true,
+      attributes: { exclude: ['id', 'passwordHash', 'createdAt', 'updatedAt'] },
+      limit: 5,
+    });
+    res.status(200).send(foundUsers);
+  } catch (e) {
+    next(e);
+  }
 };
-module.exports.getUserById = async () => {
-  console.log('getUserId');
+module.exports.getUserById = async (req, res, next) => {
+  const {
+    params: { userId },
+  } = req;
+  try {
+    const [foundUser] = await User.findAll({
+      raw: true,
+      where: { id: userId },
+      attributes: { exclude: ['id', 'passwordHash', 'createdAt', 'updatedAt'] },
+    });
+    if (foundUser) {
+      res.status(200).send(foundUser);
+    } else {
+      res.status(404).send('NOT FOUND');
+    }
+  } catch (e) {
+    next(e);
+  }
 };
-module.exports.createUser = async () => {
-  console.log('create');
+module.exports.createUser = async (req, res, next) => {
+  const { body } = req;
+  try {
+    const createdUser = await User.create(body);
+    const prepairedUser = _.omit(createdUser.get(), [
+      'id',
+      'passwordHash',
+      'createdAt',
+      'updatedAt',
+    ]);
+    res.status(201).send(prepairedUser);
+  } catch (e) {
+    next(e);
+  }
 };
 module.exports.updateUser = async () => {
   console.log('update');
