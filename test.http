@@ -1,13 +1,13 @@
-GET http://192.168.1.103/api/users/ HTTP/1.1
+GET http://192.168.2.103:5000/api/users/ HTTP/1.1
 ###
-POST http://192.168.1.103/api/users HTTP/1.1
+POST http://192.168.2.103:5000/api/users HTTP/1.1
 Content-Type: application/json
 
 {
   "firstName": "User",
   "lastName": "Userko",
-  "email": "qwaa@qwer.qwer",
-  "passwordHash": "qwerty",
+  "email": "qwa1kka@qwer.qwer",
+  "password": "qwerty",
   "gender": "male",
   "birthday": "2000-01-01"
 }

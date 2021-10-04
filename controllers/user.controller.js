@@ -5,7 +5,7 @@ module.exports.getUsers = async (req, res, next) => {
   try {
     const foundUsers = await User.findAll({
       raw: true,
-      attributes: { exclude: ['id', 'passwordHash', 'createdAt', 'updatedAt'] },
+      attributes: { exclude: ['id', 'password', 'createdAt', 'updatedAt'] },
       limit: 5,
     });
     res.status(200).send(foundUsers);
@@ -21,7 +21,7 @@ module.exports.getUserById = async (req, res, next) => {
     const [foundUser] = await User.findAll({
       raw: true,
       where: { id: userId },
-      attributes: { exclude: ['id', 'passwordHash', 'createdAt', 'updatedAt'] },
+      attributes: { exclude: ['id', 'password', 'createdAt', 'updatedAt'] },
     });
     if (foundUser) {
       res.status(200).send(foundUser);
@@ -38,7 +38,7 @@ module.exports.createUser = async (req, res, next) => {
     const createdUser = await User.create(body);
     const prepairedUser = _.omit(createdUser.get(), [
       'id',
-      'passwordHash',
+      'password',
       'createdAt',
       'updatedAt',
     ]);
